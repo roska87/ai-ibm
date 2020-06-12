@@ -1,7 +1,8 @@
-const server = require('./app');
+const express = require('express');
+const app = express();
 
-let port = 3000;
+app.get('/', async (request, response) => {
+    response.send('Hello World')
+})
 
-server.listen(port, function () {
-    console.log(`El servidor esta funcionando en el puerto: ${port}`);
-});
+module.exports = app;

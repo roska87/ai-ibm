@@ -1,8 +1,9 @@
-const express = require('express');
-const app = express();
+require('dotenv').config();
+
+const server = require('./app');
  
-app.get('/', async (request, response) => {
-  response.send('Hello World')
-})
- 
-module.exports = app;
+let port = process.env.PORT || 3000;
+
+server.listen(port, function () {
+    console.log(`El servidor esta funcionando en el puerto: ${port}`);
+});
