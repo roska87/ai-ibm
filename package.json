@@ -1,0 +1,24 @@
+{
+  "name": "ibm-project",
+  "version": "1.0.0",
+  "description": "Watson Developer Project",
+  "main": "sever.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roska87/ai-ibm.git"
+  },
+  "author": "Ari Rostkier",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/roska87/ai-ibm/issues"
+  },
+  "homepage": "https://github.com/roska87/ai-ibm#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.4"
+  }
+}
