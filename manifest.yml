@@ -1,0 +1,14 @@
+applications:
+    - name: senpai-ai-arostkier-dev
+      memory: 128M
+      instances: 1
+      env:
+        API_KEY: '{placeholder}'
+
+    - name: senpai-ai-arostkier-test
+      memory: 128M
+      instances: 1
+
+    - name: senpai-ai-arostkier-prod
+      memory: 128M
+      instances: 1
