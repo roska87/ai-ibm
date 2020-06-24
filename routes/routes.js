@@ -26,11 +26,11 @@ router.get('/message', watsonAssistantController.sendMessage);
 // Rutas Webhook
 router.post('/webhook/assistant', async (req, res) => {
     if(req.body.action === 'hello_world'){
-        return { message: 'Hello World' };    
+        res.send({ message: 'Hello World' });    
     }else if(req.body.action === 'hoteles_punta' ){    
-        return { hoteles: ['Conrad', 'Torreon']};
+        res.send({ hoteles: ['Conrad', 'Torreon']});
     }else{
-        return { message: 'Hello' };    
+        res.send({ message: 'Hello' });    
     }
 });
 
