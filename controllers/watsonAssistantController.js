@@ -6,14 +6,20 @@ const assistant = new AssistantV2({
   authenticator: new IamAuthenticator({
     apikey: process.env.WATSON_ASSISTANT_APIKEY,
   }),
-  url: process.env.WATSON_ASSISTANT_URL
+  url: process.env.WATSON_ASSISTANT_URL,
 });
 
 let sendMessage = async (req, res) => {
     try {
         let assistantId = process.env.WATSON_ASSISTANT_ASSISTANT_ID;
-        let sessionId = await createSession(assistantId);
-        let text = req.query.text;
+        let sessionId = req.body.sessionId ? req.body.sessionId : await createSession(assistantId);
+        /* if(req.body.sessionId === undefined || req.body.sessionId === null){ // if(req.body.sessionId)
+            sessionId = await createSession(assistantId);
+        }
+        else{
+            sessionId = req.body.sessionId;
+        } */
+        let text = req.body.text;
 
         /*
         POST:
@@ -36,6 +42,7 @@ let sendMessage = async (req, res) => {
 
         res.status(200).send({
             success: true, 
+            sessionId: sessionId,
             result: response.result.output.generic
         });
 
@@ -46,14 +53,9 @@ let sendMessage = async (req, res) => {
 
 let createSession = async (assistantId) => {
     let response = await assistant.createSession({ assistantId: assistantId });
-    console.log(JSON.stringify(response.result, null, 2));
-
+    console.log(`Nueva Session_ID creada: ${response.result.session_id}`);
     return response.result.session_id;
 };
-
-let deleteSession = async (sessionId) => {
-
-}
 
 module.exports = {
     sendMessage

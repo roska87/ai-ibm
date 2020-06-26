@@ -21,7 +21,7 @@ router.get('/ping', pingController.getPing);
 router.post('/ping', pingController.postPing);
 
 // Rutas Watson Assistant
-router.get('/message', watsonAssistantController.sendMessage);
+router.post('/message', watsonAssistantController.sendMessage);
 
 // Rutas Webhook
 router.post('/webhook/assistant', async (req, res) => {
