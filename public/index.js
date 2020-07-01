@@ -56,7 +56,7 @@
             .then((res) => res.json())
             .then((response) => {
               $(".messages li").last().remove();
-              
+  
               console.log(response);
               session_id = response.sessionId;
               response.result.forEach((generic) => {
@@ -71,6 +71,13 @@
                   sendMessage(JSON.stringify(generic), "bot");
                 }
               });
+  
+              if (response.intencion.intent === "precio_habitacion") {
+                sendMessage(
+                  '<input type="file" name="imagen" id="inputImage"><button id="enviarImage" onclick="sendClassifyImage()">Enviar</button>',
+                  "bot"
+                );
+              }
             })
             .catch((error) => console.error("Error:", error));
         }
@@ -78,6 +85,22 @@
           { scrollTop: $messages.prop("scrollHeight") },
           300
         );
+      };
+      sendClassifyImage = function () {
+        let formData = new FormData();
+        let fileField = document.querySelector("#inputImage");
+        formData.append('imagen', fileField.files[0]);
+  
+        fetch('/api/v1/classify', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(response => {
+          console.log(response);
+          sendMessage(response.respuesta, "bot");
+        })
+        .catch((error) => console.error("Error:", error));
       };
       $(".send_message").click(function (e) {
         return sendMessage(getMessageText(), "user");
