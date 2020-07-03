@@ -4,6 +4,8 @@ const router = express.Router();
 const pingController = require('./../controllers/pingController');
 const watsonAssistantController = require('./../controllers/watsonAssistantController');
 const watsonAssistantVisualRecognitionController = require('./../controllers/watsonAssistantVisualRecognitionController');
+const watsonNluController = require('./../controllers/watsonNluController');
+const watsonCloudant = require('./../controllers/cloudantController');
 
 router.get('/hola-mundo', async (req, res) => {
     //console.log(req);
@@ -23,8 +25,15 @@ router.post('/ping', pingController.postPing);
 
 // Rutas Watson Assistant
 router.post('/message', watsonAssistantController.sendMessage);
+
 // Rutas Watson Visual Recognition
 router.post('/classify', watsonAssistantVisualRecognitionController.classifyImage);
+
+// Rutas Watson Natural Language Understanding
+router.post('/analyze', watsonNluController.analyze);
+
+// Rutas Cloudant
+router.post('/insert/nlu', watsonCloudant.insertNlu);
 
 // Rutas Webhook
 router.post('/webhook/assistant', async (req, res) => {

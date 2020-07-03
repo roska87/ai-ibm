@@ -43,6 +43,7 @@ let sendMessage = async (req, res) => {
         res.status(200).send({
             success: true, 
             sessionId: sessionId,
+            intencion: response.result.output.intents[0] || { intent: 'none' },
             result: response.result.output.generic
         });
 
