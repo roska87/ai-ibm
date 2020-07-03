@@ -28,8 +28,11 @@ let classifyImage = async (req, res) => {
           return (prev.score > current.score) ? prev : current
        });
   
+       console.log('------');
+       console.log(hotel.class);
+
       axios.post(process.env.CLOUD_FUNCTION_URL, {
-          action: 'precio_habitacion',
+          action: 'precio_promedio_habitacion',
           hotel: hotel.class
         })
         .then(function (response) {

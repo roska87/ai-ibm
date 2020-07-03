@@ -73,7 +73,7 @@
               }
             });
 
-            if (response.intencion.intent === "precio_habitacion") {
+            if (response.intencion.intent === "hotel_desde_imagen") {
               sendMessage(
                 '<input type="file" name="imagen" id="inputImage"><button id="enviarImage" onclick="sendClassifyImage()">Enviar</button>',
                 "bot"
