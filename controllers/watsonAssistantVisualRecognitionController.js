@@ -27,9 +27,6 @@ let classifyImage = async (req, res) => {
       var hotel = classifiedImages.images[0].classifiers[0].classes.reduce(function (prev, current) {
           return (prev.score > current.score) ? prev : current
        });
-  
-       console.log('------');
-       console.log(hotel.class);
 
       axios.post(process.env.CLOUD_FUNCTION_URL, {
           action: 'precio_promedio_habitacion',
