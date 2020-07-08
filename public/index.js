@@ -16,8 +16,9 @@
     return this;
   };
   $(function () {
-    var getMessageText, message_side, sendMessage, session_id, sendNluAnalyze;
+    var getMessageText, message_side, sendMessage, session_id, sendNluAnalyze, sendEmotionAnalyze, context;
     sendNluAnalyze = false;
+    sendEmotionAnalyze = false;
     message_side = "right";
     getMessageText = function () {
       var $message_input;
@@ -60,6 +61,7 @@
 
             console.log(response);
             session_id = response.sessionId;
+            context = response.context;
             response.result.forEach((generic) => {
               if (generic.response_type === "text") {
                 sendMessage(generic.text, "bot");
@@ -81,6 +83,14 @@
             } else if (response.intencion.intent === "analizar_url") {
               sendNluAnalyze = true;
             };
+
+            if (context.skills["main skill"].user_defined) {
+              if (context.skills["main skill"].user_defined.action) {
+                if (context.skills["main skill"].user_defined.action === "evaluar_emocion") {
+                  sendEmotionAnalyze = true;
+                }
+              }
+            }
           })
           .catch((error) => console.error("Error:", error));
       }
@@ -135,9 +145,41 @@
           sendNluAnalyze = false;
         });
     };
+    sendEmotionToAnalyze = function (text) {
+      $(".message_input").val("");
+      let $messages = $(".messages");
+      let message = new Message({
+        text: text,
+        message_side: "right",
+      });
+      message.draw();
+      $messages.animate({ scrollTop: $messages.prop("scrollHeight") }, 300);
+
+      let data = { text: text, sessionId: session_id, context: context};
+      console.log(data);
+      fetch("/api/v1/message/emotion", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((response) => {
+          console.log(response.result);
+          sendMessage(response.result[0].text, "bot");
+          sendEmotionAnalyze = false;
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          sendEmotionAnalyze = false;
+        });
+    };
     $(".send_message").click(function (e) {
       if (sendNluAnalyze) {
         sendUrlToAnalyze(getMessageText());
+      } else if (sendEmotionAnalyze) {
+        sendEmotionToAnalyze(getMessageText());
       } else {
         sendMessage(getMessageText(), "user");
       }
@@ -146,6 +188,8 @@
       if (e.which === 13) {
         if (sendNluAnalyze) {
           sendUrlToAnalyze(getMessageText());
+        } else if (sendEmotionAnalyze) {
+          sendEmotionToAnalyze(getMessageText());
         } else {
           sendMessage(getMessageText(), "user");
         }
