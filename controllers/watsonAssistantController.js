@@ -44,10 +44,17 @@ let sendMessage = async (req, res) => {
         });
         console.log(JSON.stringify(response.result, null, 2));
 
+        let intencionData;
+        if(response.result.output.intents){
+            intencionData = response.result.output.intents[0];
+        }else{
+            intencionData = { intent: 'none' };
+        }
+
         res.status(200).send({
             success: true, 
             sessionId: sessionId,
-            intencion: response.result.output.intents[0] || { intent: 'none' },
+            intencion: intencionData,
             result: response.result.output.generic,
             context: response.result.context
         });
